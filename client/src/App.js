@@ -7,22 +7,16 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Avatar, InputBase, Stack } from '@mui/material';
-import LocationTree from './components/location-tree/location-tree';
+import { Grid, InputBase, Stack } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
-import { SearchRounded } from '@mui/icons-material';
+import { Bookmark, Delete, Folder, Home, Route, SearchRounded } from '@mui/icons-material';
 import ItemsContainer from './components/items-container/items-container';
-
+import folderImage from "./images/folder.png";
+import LeftBarLink from './components/left-bar-link/left-bar-link';
 
 
 
@@ -37,7 +31,6 @@ const Search = styled('div')(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
-    width: 'auto',
   },
 }));
 
@@ -78,7 +71,8 @@ function App(props) {
       <AppBar sx={{position: 'relative', m: 0, p: 0}}>
         <Toolbar sx={{ px: 1 }}>
           <Stack spacing={1} flexWrap={false} flex={true} direction="row" alignItems={'center'}>
-            <Avatar src='NULL' alt='File Explorer' sx={{boxShadow: 10}} />
+            
+            <img src={folderImage} alt="logo" style={{objectFit: 'contain', width: '30px'}}/>
             <Typography variant="h6" noWrap component="div">
               File Explorer
             </Typography>
@@ -87,29 +81,16 @@ function App(props) {
       </AppBar>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <LeftBarLink text="Home" icon={<Home/>} />
+        <LeftBarLink text="Bookmarks" icon={<Bookmark/>} />
+        <LeftBarLink text="Trash" icon={<Delete/>} />
       </List>
       <Divider />
+
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <LeftBarLink text="RECENT_FOLDER" icon={<Folder/>} />
+        <LeftBarLink text="RECENT_FOLDER" icon={<Folder/>} />
+        <LeftBarLink text="RECENT_FOLDER" icon={<Folder/>} />
       </List>
     </div>
   );
@@ -136,17 +117,36 @@ function App(props) {
           >
             <MenuIcon />
           </IconButton>
-          <LocationTree/>
 
-          <Search>
-            <SearchIconWrapper>
-              <SearchRounded />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          <Box sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
+            <Grid container component="main" spacing={2}>
+              <Grid item xs={6} sm={7} md={9}>
+                <Search>
+                  <SearchIconWrapper>
+                    <Route/>
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    inputProps={{ 'aria-label': 'path' }}
+                    defaultValue="Home"
+                  />
+                </Search>
+              </Grid>
+
+              <Grid item xs={6} sm={5} md={3}>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchRounded />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ 'aria-label': 'search' }}
+                  />
+                </Search>
+              </Grid>
+            </Grid>
+            
+            
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
