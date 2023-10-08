@@ -7,7 +7,7 @@ const FileItem = props => {
 
 
     return (
-        <Box sx={{width: '100px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
+        <Box sx={{width: '100px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', cursor: 'pointer'}}>
             {
                 ext === "directory"
                 ?
