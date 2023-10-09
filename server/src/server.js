@@ -6,7 +6,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 8000;
 
 // server
-const SERVER = http.createServer(() => {});
+const SERVER = http.createServer(app);
 
 // launch 
 SERVER.listen(PORT, () => {
