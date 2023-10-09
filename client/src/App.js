@@ -17,6 +17,8 @@ import { Bookmark, Delete, Folder, Home, Route, SearchRounded } from '@mui/icons
 import ItemsContainer from './components/items-container/items-container';
 import folderImage from "./images/folder.png";
 import LeftBarLink from './components/left-bar-link/left-bar-link';
+import BackForwardBtns from './components/back-forward-btns/back-forward-btns';
+import { useSelector } from 'react-redux';
 
 
 
@@ -28,7 +30,7 @@ const Search = styled('div')(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginLeft: 0,
-  width: '100%',
+  //width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
   },
@@ -46,6 +48,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
+  width: '100%',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -61,6 +64,7 @@ const drawerWidth = 240;
 function App(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const currentPath = useSelector(state => state.itemsContainer.currentPath);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -100,6 +104,7 @@ function App(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
+      <BackForwardBtns/>
       <AppBar
         position="fixed"
         sx={{
@@ -127,7 +132,7 @@ function App(props) {
                   </SearchIconWrapper>
                   <StyledInputBase
                     inputProps={{ 'aria-label': 'path' }}
-                    defaultValue="Home"
+                    value={currentPath}
                   />
                 </Search>
               </Grid>

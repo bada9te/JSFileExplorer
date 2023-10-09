@@ -1,20 +1,31 @@
 import { Stack } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import FileItem from "../file-item/file-item";
+import { fetchDrives, navigateFS } from "./itemsContainerSlice";
 
 const ItemsContainer = props => {
+    const dispatch = useDispatch();
+    const items = useSelector(state => state.itemsContainer.items);
+    const currentPath = useSelector(state => state.itemsContainer.currentPath);
+
+    useEffect(() => {
+        dispatch(fetchDrives());
+    }, []);
+
+    useEffect(() => {
+        if (currentPath !== "") {
+            dispatch(navigateFS());
+        }
+    }, [currentPath]);
+
     return (
-        <Stack spacing={2} sx={{display: 'flex', justifyContent: {xs: 'space-around', sm: 'flex-start'}, alignItems: 'center'}} direction="row" useFlexGap flexWrap="wrap">
-            <FileItem name="testFolder1" ext="directory"/>
-            <FileItem name="testFolder2" ext="directory"/>
-            <FileItem name="testFolder3" ext="directory"/>
-            <FileItem name="a" ext="txt"/>
-            <FileItem name="b" ext="xls"/>
-            <FileItem name="c" ext="psd"/>
-            <FileItem name="a" ext="txt"/>
-            <FileItem name="b" ext="xls"/>
-            <FileItem name="c" ext="psd"/>
-            <FileItem name="a" ext="pdf"/>
-            <FileItem name="b" ext="xls"/>
+        <Stack spacing={2} sx={{mb: 10, display: 'flex', justifyContent: {xs: 'space-around', sm: 'flex-start'}, alignItems: 'start'}} direction="row" useFlexGap flexWrap="wrap">
+            {
+                items.map((item, i) => {
+                    return (<FileItem key={i} name={item.name} ext={item.type}/>);
+                })
+            }
         </Stack>
     );
 }
