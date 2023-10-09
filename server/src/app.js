@@ -17,7 +17,7 @@ app.use(errorHandler);
 
 
 // TODO: provide app endpoints
-// example: app.use('/route', require('path_to_router'));
+app.use('/fs', require('./routers/filesystem.router'));
 
 
 module.exports = app;
