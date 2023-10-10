@@ -18,6 +18,7 @@ import LeftBarLink from '../components/left-bar-link/left-bar-link';
 import BackForwardBtns from '../components/back-forward-btns/back-forward-btns';
 import { useSelector } from 'react-redux';
 import { Outlet } from "react-router-dom"
+import DirectoryTree from '../components/directory-tree/directory-tree';
 
 
 
@@ -85,11 +86,7 @@ const AppContainer = props => {
         <LeftBarLink text="Home" icon={<Home/>} />
       </List>
       <Divider />
-      <List>
-        <LeftBarLink text="RECENT_FOLDER" icon={<Folder/>} />
-        <LeftBarLink text="RECENT_FOLDER" icon={<Folder/>} />
-        <LeftBarLink text="RECENT_FOLDER" icon={<Folder/>} />
-      </List>
+      <DirectoryTree/>
     </div>
   );
 

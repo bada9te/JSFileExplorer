@@ -265,21 +265,28 @@ const getDirectoryTree = (req, res, next) => {
         const normalizedPath = path.normalize(requestedPath);
         
         // function to build tree
-        function buildTree(directory) {
+        function buildTree(directory, depth = 0, maxDepth = 2) {
+            if (depth === maxDepth) {
+              return null;
+            }
+          
             const tree = {};
+          
             const items = fs.readdirSync(directory);
-        
+          
             items.forEach(item => {
                 const itemPath = path.join(directory, item);
-                const stat = fs.statSync(itemPath);
-
-                if (stat.isDirectory()) {
-                    tree[item] = buildTree(itemPath);
-                } else {
+                try {
+                    const stats = fs.statSync(itemPath);
+                    if (stats.isDirectory()) {
+                        tree[item] = buildTree(itemPath, depth + 1, maxDepth);
+                    } else {
+                        tree[item] = null;
+                    }
+                } catch (error) {
                     tree[item] = null;
                 }
             });
-        
             return tree;
         }
 
