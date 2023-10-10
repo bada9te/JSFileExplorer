@@ -3,43 +3,45 @@ import { FileIcon, defaultStyles } from 'react-file-icon';
 import folderImage from "../../images/folder.png";
 import driveImage from "../../images/drive.png";
 import { useDispatch } from "react-redux";
-import { forwardPath } from "../items-container/itemsContainerSlice";
+import { forwardPath, setHistory } from "../items-container/itemsContainerSlice";
 
 const FileItem = props => {
-    const {name, ext} = props;
+    const {meta} = props;
+    let extension = meta.item.split('.');
+    extension = extension[extension.length - 1];
     const dispatch = useDispatch();
 
     const onClickHandler = () => {
-        console.log(ext)
-        if (["drive", "directory"].includes(ext)) {
-            dispatch(forwardPath(name))
+        if (meta?.isDrive) {
+            dispatch(setHistory(["Home"]));
         }
+        dispatch(forwardPath(meta.item))
     }
 
     return (
-        <Tooltip title={name}>
+        <Tooltip title={meta.item}>
             <Button sx={{width: '100px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', cursor: 'pointer'}} onClick={onClickHandler}>
                 {
                     (() => {
-                        if (ext === "directory") {
+                        if (meta?.isDirectory) {
                             return (
                                 <>
                                     <img src={folderImage} style={{objectFit: 'contain', width: '100px'}} alt="folder"/>
-                                    <Typography sx={{ mt: 1, textTransform: 'capitalize'}} noWrap variant="body2">{`${name}`}</Typography>
+                                    <Typography sx={{ mt: 1, textTransform: 'capitalize'}} noWrap variant="body2">{`${meta.item}`}</Typography>
                                 </>
                             );
-                        } else if (ext === "drive") {
+                        } else if (meta?.isDrive) {
                             return (
                                 <>
                                     <img src={driveImage} style={{objectFit: 'contain', width: '100px'}} alt="drive"/>
-                                    <Typography sx={{mt: 1, textTransform: 'capitalize'}} noWrap variant="body2">{`${name}`}</Typography>
+                                    <Typography sx={{mt: 1, textTransform: 'capitalize'}} noWrap variant="body2">{`${meta.item}`}</Typography>
                                 </>
                             );
                         } else {
                             return (
                                 <>
-                                    <FileIcon extension={ext} {...defaultStyles[ext]} />
-                                    <Typography sx={{mt: 1, textTransform: 'capitalize'}} noWrap variant="body2">{`${name}.${ext}`}</Typography>
+                                    <FileIcon extension={extension} {...defaultStyles[extension]} />
+                                    <Typography sx={{mt: 1, textTransform: 'capitalize'}} noWrap variant="body2">{`${meta.item}`}</Typography>
                                 </>
                             );
                         }

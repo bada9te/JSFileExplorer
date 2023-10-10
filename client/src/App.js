@@ -86,7 +86,6 @@ function App(props) {
       <Divider />
       <List>
         <LeftBarLink text="Home" icon={<Home/>} />
-        <LeftBarLink text="Bookmarks" icon={<Bookmark/>} />
         <LeftBarLink text="Trash" icon={<Delete/>} />
       </List>
       <Divider />

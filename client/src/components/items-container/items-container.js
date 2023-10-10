@@ -23,7 +23,7 @@ const ItemsContainer = props => {
         <Stack spacing={2} sx={{mb: 10, display: 'flex', justifyContent: {xs: 'space-around', sm: 'flex-start'}, alignItems: 'start'}} direction="row" useFlexGap flexWrap="wrap">
             {
                 items.map((item, i) => {
-                    return (<FileItem key={i} name={item.name} ext={item.type}/>);
+                    return (<FileItem key={i} meta={item.meta}/>);
                 })
             }
         </Stack>
