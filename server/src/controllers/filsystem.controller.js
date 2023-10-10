@@ -40,7 +40,16 @@ const navigateFileSystem = (req, res, next) => {
         // normalize path 
         const normalizedPath = path.normalize(requestedPath);
         // read directory using normalized path
-        const items = fs.readdirSync(normalizedPath);
+        let items = fs.readdirSync(normalizedPath);
+        items = items.map(item => {
+            try {
+                const stat = fs.statSync(path.join(normalizedPath, item));
+                item = {item, ...stat, isFile: stat.isFile(), isDirectory: stat.isDirectory()}
+            } catch (error) {
+                item = {item, isFile: true, isDirectory: false}
+            }
+            return item;
+        });
         // ok
         return res.status(200).json({
             path: normalizedPath,
