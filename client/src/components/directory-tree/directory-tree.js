@@ -3,11 +3,17 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import { FolderOpen, Folder } from '@mui/icons-material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTree } from './directoryTreeSlice';
+import { fetchTree, fetchSubTree as fetchST } from './directoryTreeSlice';
 
 
 const TreeRecursiveItem = props => {
-    const { tree } = props;
+    const { tree, path } = props;
+    const dispatch = useDispatch();
+
+    const fetchSubTree = (path) => {
+        console.log(`${path}`)
+        dispatch(fetchST(path));
+    }
 
     return (
         <>
@@ -30,15 +36,20 @@ const TreeRecursiveItem = props => {
                         })
                     
                         .map((key, i) => {
-                            if (typeof tree[key] == 'object' && tree[key] !== null) {
+                            if (typeof tree[key] === 'object' && tree[key] !== null) {
                                 return (
-                                    <TreeItem key={i} nodeId={key} label={key}>
-                                        <TreeRecursiveItem tree={tree[key]}/>
+                                    <TreeItem 
+                                        key={i} 
+                                        nodeId={key} 
+                                        label={key} 
+                                        onClick={() => fetchSubTree(`${path}\\${key}`)}
+                                    >
+                                        <TreeRecursiveItem tree={tree[key]} path={`${path}\\${key}`} />
                                     </TreeItem>
                                 );
                             } else {
                                 return (
-                                    <TreeItem key={i} nodeId={key} label={key}></TreeItem>
+                                    <TreeItem key={i} nodeId={key} label={key}/>
                                 );
                             }
                         }) 
@@ -54,12 +65,16 @@ const TreeRecursiveItem = props => {
 const DirectoryTree = props => {
     const currentPath = useSelector(state => state.itemsContainer.currentPath);
     const tree = useSelector(state => state.directoryTree.tree);
+    const upTime = useSelector(state => state.directoryTree.upTime);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchTree());
     }, [currentPath]);
 
+    useEffect(() => {
+
+    }, [upTime])
     
     return (
         <TreeView
@@ -67,7 +82,7 @@ const DirectoryTree = props => {
             defaultExpandIcon={<Folder/>}
             style={{marginLeft: '20px'}}
         >
-            <TreeRecursiveItem tree={tree}/>
+            <TreeRecursiveItem tree={tree} path={currentPath}/>
         </TreeView>
     );
 }
