@@ -21,7 +21,12 @@ const ItemsContainer = props => {
     }, [currentPath]);
 
     return (
-        <Stack spacing={2} sx={{mb: 10, display: 'flex', justifyContent: {xs: 'space-around', sm: 'flex-start'}, alignItems: 'start'}} direction="row" useFlexGap flexWrap="wrap">
+        <Stack spacing={2} sx={{
+            mb: 10, 
+            display: 'flex', 
+            justifyContent: {xs: 'space-around', sm: 'flex-start'}, 
+            alignItems: 'start',
+        }} direction="row" useFlexGap flexWrap="wrap">
             {
                 items.map((item, i) => {
                     return (<FileItem key={i} meta={item.meta} path={`${currentPath}/${item.meta.item}`}/>);

@@ -4,6 +4,7 @@ import { FolderOpen, Folder } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTree, fetchSubTree as fetchST } from './directoryTreeSlice';
+import { Box } from '@mui/material';
 
 
 const TreeRecursiveItem = props => {
@@ -11,7 +12,7 @@ const TreeRecursiveItem = props => {
     const dispatch = useDispatch();
 
     const fetchSubTree = (path) => {
-        console.log(`${path}`)
+        //console.log(`${path}`)
         dispatch(fetchST(path));
     }
 
@@ -40,7 +41,7 @@ const TreeRecursiveItem = props => {
                                 return (
                                     <TreeItem 
                                         key={i} 
-                                        nodeId={key} 
+                                        nodeId={key + i} 
                                         label={key} 
                                         onClick={() => fetchSubTree(`${path}\\${key}`)}
                                     >
@@ -66,9 +67,8 @@ const DirectoryTree = props => {
     const currentPath = useSelector(state => state.itemsContainer.currentPath);
     const history = useSelector(state => state.itemsContainer.history);
     const tree = useSelector(state => state.directoryTree.tree);
-
-    const [treePath, setTreePath] = useState();
     
+    const [treePath, setTreePath] = useState();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -80,13 +80,19 @@ const DirectoryTree = props => {
 
     
     return (
-        <TreeView
-            defaultCollapseIcon={<FolderOpen/>}
-            defaultExpandIcon={<Folder/>}
-            style={{marginLeft: '20px'}}
-        >
-            <TreeRecursiveItem tree={tree} path={treePath}/>
-        </TreeView>
+        <Box sx={{
+            height: 'calc(100vh - 140px)',
+            overflow: 'auto'
+        }}>
+
+            <TreeView
+                defaultCollapseIcon={<FolderOpen/>}
+                defaultExpandIcon={<Folder/>}
+                style={{marginLeft: '20px'}}
+            >
+                <TreeRecursiveItem tree={tree} path={treePath}/>
+            </TreeView>
+        </Box>
     );
 }
 

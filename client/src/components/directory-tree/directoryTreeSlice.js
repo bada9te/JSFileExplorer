@@ -46,7 +46,7 @@ const DirectoryTreeSlice = createSlice({
                     const key = objectPath[i];
                     currentLevel = currentLevel[key];
                 }
-                console.log(objectPath, action.meta.arg)
+                //console.log(objectPath, action.meta.arg)
                 const lastKey = objectPath[objectPath.length - 1];
                 currentLevel[lastKey] = action.payload.data.tree;
 
