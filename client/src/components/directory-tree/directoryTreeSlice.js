@@ -3,7 +3,6 @@ import { httpGetDirectoryTree } from "../../requests/filesystem";
 
 const initialState = {
     tree: null,
-    upTime: 0,
 };
 
 export const fetchTree = createAsyncThunk(
@@ -47,13 +46,12 @@ const DirectoryTreeSlice = createSlice({
                     const key = objectPath[i];
                     currentLevel = currentLevel[key];
                 }
-                
+                console.log(objectPath, action.meta.arg)
                 const lastKey = objectPath[objectPath.length - 1];
                 currentLevel[lastKey] = action.payload.data.tree;
 
                 // save
                 state.tree = tree;
-                state.upTime++;
             });
     }
 });

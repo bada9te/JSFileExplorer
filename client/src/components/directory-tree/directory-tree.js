@@ -1,7 +1,7 @@
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import { FolderOpen, Folder } from '@mui/icons-material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTree, fetchSubTree as fetchST } from './directoryTreeSlice';
 
@@ -64,17 +64,20 @@ const TreeRecursiveItem = props => {
 
 const DirectoryTree = props => {
     const currentPath = useSelector(state => state.itemsContainer.currentPath);
+    const history = useSelector(state => state.itemsContainer.history);
     const tree = useSelector(state => state.directoryTree.tree);
-    const upTime = useSelector(state => state.directoryTree.upTime);
+
+    const [treePath, setTreePath] = useState();
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchTree());
-    }, [currentPath]);
+        if (history.length < 3) {
+            setTreePath(currentPath);
+            dispatch(fetchTree());
+        }
+    }, [currentPath, history]);
 
-    useEffect(() => {
-
-    }, [upTime])
     
     return (
         <TreeView
@@ -82,7 +85,7 @@ const DirectoryTree = props => {
             defaultExpandIcon={<Folder/>}
             style={{marginLeft: '20px'}}
         >
-            <TreeRecursiveItem tree={tree} path={currentPath}/>
+            <TreeRecursiveItem tree={tree} path={treePath}/>
         </TreeView>
     );
 }
