@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
-import { httpListDrives, httpNavigateFileSystem } from "../../requests/filesystem";
-import { createItem } from "../move-copy-modal/createItemModalSlice";
+import { httpCreateFileOrFolder, httpDeleteFileOrFolder, httpListDrives, httpNavigateFileSystem } from "../../requests/filesystem";
 
 const initialState = {
     items: [],
@@ -20,6 +19,21 @@ export const navigateFS = createAsyncThunk(
     async(_, thunkApi) => {
         const currentPath = thunkApi.getState().itemsContainer.currentPath;
         return await httpNavigateFileSystem(currentPath);
+    }
+);
+
+export const deleteItem = createAsyncThunk(
+    'ITEMS_CONTAINER/delete-item',
+    async({item, isFolder}, thunkApi) => {
+        const currentPath = thunkApi.getState().itemsContainer.currentPath + '\\' + item;
+        return await httpDeleteFileOrFolder(currentPath, isFolder ? "folder" : "file");
+    }
+);
+
+export const createItem = createAsyncThunk(
+    'ITEMS_CONTAINER/create-item',
+    async({name, path, isFolder}) => {
+        return await httpCreateFileOrFolder({path, name, type: isFolder ? "folder" : "file"});
     }
 );
 
@@ -70,9 +84,14 @@ const ItemsContainerSlice = createSlice({
 
                     //const items = JSON.parse(JSON.stringify(current(state.items)));
                     state.items.push({meta: itemToAdd});
-
                 }
             })
+            .addCase(deleteItem.fulfilled, (state, { meta }) => {
+                const name = meta.arg.item;
+                const items = JSON.parse(JSON.stringify(current(state.items))).filter(i => i.meta.item !== name);
+                state.items = items;
+            })
+
     }
 });
 

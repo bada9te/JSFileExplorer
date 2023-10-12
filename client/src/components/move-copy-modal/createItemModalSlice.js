@@ -1,17 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { httpCreateFileOrFolder } from "../../requests/filesystem";
+import { createSlice } from "@reduxjs/toolkit";
+import { createItem } from "../items-container/itemsContainerSlice";
 
 const initialState = {
     isOpen: false,
 };
-
-
-export const createItem = createAsyncThunk(
-    'create',
-    async({name, path, isFolder}) => {
-        return await httpCreateFileOrFolder({path, name, type: isFolder ? "folder" : "file"});
-    }
-);
 
 
 const CreateItemModalSlice = createSlice({

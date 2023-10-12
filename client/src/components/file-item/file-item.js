@@ -3,17 +3,18 @@ import { FileIcon, defaultStyles } from 'react-file-icon';
 import folderImage from "../../images/folder.png";
 import driveImage from "../../images/drive.png";
 import { useDispatch, useSelector } from "react-redux";
-import { forwardPath, setHistory } from "../items-container/itemsContainerSlice";
+import { deleteItem, forwardPath, setHistory } from "../items-container/itemsContainerSlice";
 import { useState } from "react";
 import { DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline } from '@mui/icons-material';
 import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBtnsSlice";
 
 const FileItem = props => {
-    const {meta, path} = props;
+    const {meta} = props;
 
     let extension = meta.item.split('.');
     extension = extension[extension.length - 1];
     const dispatch = useDispatch();
+    const currentPath = useSelector(state => state.itemsContainer.currentPath);
 
     // menu
     const [anchorEl, setAnchorEl] = useState(null);
@@ -34,6 +35,12 @@ const FileItem = props => {
             dispatch(setHistory(["Home"]));
         }
         dispatch(forwardPath(meta.item));
+    }
+
+    // delete handler
+    const deleteHandler = () => {
+        dispatch(deleteItem({item: meta.item, isFolder: meta.isDirectory}));
+        handleClose();
     }
 
     return (
@@ -89,7 +96,7 @@ const FileItem = props => {
                 'aria-labelledby': 'basic-button',
             }}
         >
-            <MenuItem onClick={handleClose} disabled={meta?.isDrive}><DeleteOutline sx={{mr: 1}}/>Delete</MenuItem>
+            <MenuItem onClick={deleteHandler} disabled={meta?.isDrive}><DeleteOutline sx={{mr: 1}}/>Delete</MenuItem>
             <MenuItem onClick={handleClose} disabled={meta?.isDrive}><DriveFileRenameOutline sx={{mr: 1}}/>Rename</MenuItem>
             <MenuItem onClick={handleClose} disabled={meta?.isDrive}><DriveFileMoveOutlined sx={{mr: 1}}/>Move</MenuItem>
             { meta?.isDrive && <MenuItem onClick={handleClose}>File operations are not available on drives!</MenuItem> }

@@ -29,7 +29,7 @@ const ItemsContainer = props => {
         }} direction="row" useFlexGap flexWrap="wrap">
             {
                 items.map((item, i) => {
-                    return (<FileItem key={i} meta={item.meta} path={`${currentPath}/${item.meta.item}`}/>);
+                    return (<FileItem key={i} meta={item.meta} path={`${currentPath}\\${item.meta.item}`}/>);
                 })
             }
         </Stack>

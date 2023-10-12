@@ -7,8 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch, useSelector } from 'react-redux';
-import { createItem, setIsOpen } from './createItemModalSlice';
+import { setIsOpen } from './createItemModalSlice';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { createItem } from '../items-container/itemsContainerSlice';
 
 export default function CreateItemModal() {
     const dispatch = useDispatch();
