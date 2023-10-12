@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
 import { httpListDrives, httpNavigateFileSystem } from "../../requests/filesystem";
+import { createItem } from "../move-copy-modal/createItemModalSlice";
 
 const initialState = {
     items: [],
@@ -61,6 +62,16 @@ const ItemsContainerSlice = createSlice({
                             .map(i => ({ meta: {...i, isDrive: false} }))
                             .sort((a, b) => Number(b.meta.isDirectory) - Number(a.meta.isDirectory));
                 state.items = items;
+            })
+            .addCase(createItem.fulfilled, (state, action) => {
+                const result = action.payload.data;
+                if (result.done) {
+                    const itemToAdd = result.target.item;
+
+                    //const items = JSON.parse(JSON.stringify(current(state.items)));
+                    state.items.push({meta: itemToAdd});
+
+                }
             })
     }
 });

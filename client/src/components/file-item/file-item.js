@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { forwardPath, setHistory } from "../items-container/itemsContainerSlice";
 import { useState } from "react";
 import { DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline } from '@mui/icons-material';
-import { setBackwardAllowed, setForwardAllowed } from "../back-forward-btns/backForwardBtnsSlice";
+import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBtnsSlice";
 
 const FileItem = props => {
     const {meta, path} = props;

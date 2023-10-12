@@ -7,17 +7,13 @@ import { fetchDrives, setCurrentPath, setHistory } from "../items-container/item
 const LeftBarLink = props => {
     const {icon, text} = props;
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
 
     const handleClick = () => {
         if (text === "Home") {
-            navigate('/');
             dispatch(fetchDrives());
             dispatch(setCurrentPath(""));
             dispatch(setHistory(["Home"]));
-        } else if (text === "Bookmarks") {
-            navigate('/bookmarks');
         }
     }
 

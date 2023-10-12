@@ -73,17 +73,26 @@ const createFileOrFolder = (req, res, next) => {
 
     try {
         const normalizedPath = path.normalize(requestedPath);
+        const targetPath = path.join(normalizedPath, `${name}`);
         if (type !== "folder") {
-            fs.writeFileSync(path.join(normalizedPath, `${name}.${type}`), "");
+            fs.writeFileSync(targetPath, "");
         } else {
-            fs.mkdirSync(path.join(normalizedPath, `${name}`));
+            fs.mkdirSync(targetPath);
+        }
+
+        let stat;
+        let item;
+        try {
+            stat = fs.statSync(targetPath);
+            item = {item: name, ...stat, isFile: stat.isFile(), isDirectory: stat.isDirectory()}
+        } catch (error) {
+            item = {item: name, isFile: type !== "directory" ? true : false, isDirectory: type === "directory" ? true : false}
         }
 
         return res.status(201).json({
             target: {
                 path: normalizedPath,
-                type,
-                name,
+                item,
             },
             done: true,
         });

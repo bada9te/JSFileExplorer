@@ -1,17 +1,18 @@
 import { Add, ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Fab, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDrives, navigateFS, setCurrentPath } from "../items-container/itemsContainerSlice";
-import { setBackwardAllowed, setForwardAllowed } from "./backForwardBtnsSlice";
+import { setIsOpen as setCreateItemModalIsShowing } from "../move-copy-modal/createItemModalSlice";
+import { setBackwardAllowed, setForwardAllowed } from "./controlBtnsSlice";
 
 
-const BackForwardBtns = props => {
+const ControlBtns = props => {
   const dispatch = useDispatch();
   const history = useSelector(state => state.itemsContainer.history);
   const currentPath = useSelector(state => state.itemsContainer.currentPath);
-  const backwardAllowed = useSelector(state => state.backForwardBtns.backwardAllowed);
-  const forwardAllowed = useSelector(state => state.backForwardBtns.forwardAllowed);
+  const backwardAllowed = useSelector(state => state.controlBtns.backwardAllowed);
+  const forwardAllowed = useSelector(state => state.controlBtns.forwardAllowed);
 
 
   // move fs history backward
@@ -41,6 +42,11 @@ const BackForwardBtns = props => {
     dispatch(setCurrentPath(history[newPoint]));
   }
 
+  // create
+  const handleCreate = () => {
+    dispatch(setCreateItemModalIsShowing(true));
+  }
+
 
   useEffect(() => {
     if (history.indexOf(currentPath) > 0) {
@@ -64,11 +70,11 @@ const BackForwardBtns = props => {
       <Fab color="primary" aria-label="add" onClick={handleGoForward} disabled={!forwardAllowed}>
         <ArrowForward />
       </Fab>
-      <Fab color="secondary" aria-label="add">
+      <Fab color="secondary" aria-label="add" onClick={handleCreate}>
         <Add />
       </Fab>
     </Stack>
   );
 }
 
-export default BackForwardBtns;
+export default ControlBtns;

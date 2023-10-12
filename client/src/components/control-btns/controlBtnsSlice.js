@@ -6,7 +6,7 @@ const initialState = {
     forwardAllowed: false,
 };
 
-const BackForwardBtnsSlice = createSlice({
+const ControlBtnsSlice = createSlice({
     name: 'NAV_BTNS',
     initialState,
     reducers: {
@@ -19,7 +19,7 @@ const BackForwardBtnsSlice = createSlice({
     }
 });
 
-const { reducer, actions } = BackForwardBtnsSlice;
+const { reducer, actions } = ControlBtnsSlice;
 
 export const {
     setBackwardAllowed,

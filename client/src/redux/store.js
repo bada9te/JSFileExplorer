@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import itemsContainerSlice from "../components/items-container/itemsContainerSlice";
-import backForwardBtnsSlice from "../components/back-forward-btns/backForwardBtnsSlice";
+import controlBtnsSlice from "../components/control-btns/controlBtnsSlice";
 import directoryTreeSlice from "../components/directory-tree/directoryTreeSlice";
-import moveCopyModalSlice from "../components/move-copy-modal/moveCopyModalSlice";
+import createItemModalSlice from "../components/move-copy-modal/createItemModalSlice";
 
 const store = configureStore({
     reducer: {
         itemsContainer: itemsContainerSlice,
-        backForwardBtns: backForwardBtnsSlice,
+        controlBtns: controlBtnsSlice,
         directoryTree: directoryTreeSlice,
-        moveCopyModal: moveCopyModalSlice,
+        createItemModal: createItemModalSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
     devTools: process.env.REACT_APP_VERSION_TYPE === "production" ? false : true,
