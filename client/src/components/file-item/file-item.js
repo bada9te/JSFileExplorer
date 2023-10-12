@@ -3,9 +3,9 @@ import { FileIcon, defaultStyles } from 'react-file-icon';
 import folderImage from "../../images/folder.png";
 import driveImage from "../../images/drive.png";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem, forwardPath, setHistory } from "../items-container/itemsContainerSlice";
+import { copyItem, deleteItem, forwardPath, resetSelectedItems, setHistory, setSelectedItemPath, setSelectedItemToCopyPath, setSelectedItemToMovePath } from "../items-container/itemsContainerSlice";
 import { useState } from "react";
-import { DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline } from '@mui/icons-material';
+import { ContentCopyOutlined, DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline } from '@mui/icons-material';
 import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBtnsSlice";
 
 const FileItem = props => {
@@ -42,6 +42,21 @@ const FileItem = props => {
         dispatch(deleteItem({item: meta.item, isFolder: meta.isDirectory}));
         handleClose();
     }
+    // copy handler
+    const copyHandler = () => {
+        dispatch(resetSelectedItems());
+        dispatch(setSelectedItemToCopyPath(`${currentPath}\\${meta.item}`));
+        handleClose();
+    }
+
+    // rename (move) handler
+    const moveHandler = () => {
+        dispatch(resetSelectedItems());
+        dispatch(setSelectedItemToMovePath(`${currentPath}\\${meta.item}`));
+        handleClose();
+    }
+
+
 
     return (
         <>
@@ -97,8 +112,9 @@ const FileItem = props => {
             }}
         >
             <MenuItem onClick={deleteHandler} disabled={meta?.isDrive}><DeleteOutline sx={{mr: 1}}/>Delete</MenuItem>
-            <MenuItem onClick={handleClose} disabled={meta?.isDrive}><DriveFileRenameOutline sx={{mr: 1}}/>Rename</MenuItem>
-            <MenuItem onClick={handleClose} disabled={meta?.isDrive}><DriveFileMoveOutlined sx={{mr: 1}}/>Move</MenuItem>
+            <MenuItem onClick={() => {}} disabled={meta?.isDrive}><DriveFileRenameOutline sx={{mr: 1}}/>Rename</MenuItem>
+            <MenuItem onClick={moveHandler} disabled={meta?.isDrive}><DriveFileMoveOutlined sx={{mr: 1}}/>Move</MenuItem>
+            <MenuItem onClick={copyHandler} disabled={meta?.isDrive}><ContentCopyOutlined sx={{mr: 1}}/>Copy</MenuItem>
             { meta?.isDrive && <MenuItem onClick={handleClose}>File operations are not available on drives!</MenuItem> }
         </Menu>
         </>

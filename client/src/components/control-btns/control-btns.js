@@ -1,4 +1,4 @@
-import { Add, ArrowBack, ArrowForward } from "@mui/icons-material";
+import { Add, ArrowBack, ArrowForward, ContentPaste, ContentPasteGo } from "@mui/icons-material";
 import { Fab, Stack } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,8 @@ const ControlBtns = props => {
   const currentPath = useSelector(state => state.itemsContainer.currentPath);
   const backwardAllowed = useSelector(state => state.controlBtns.backwardAllowed);
   const forwardAllowed = useSelector(state => state.controlBtns.forwardAllowed);
+  const selectedItemToCopyPath = useSelector(state => state.itemsContainer.selectedItemToCopyPath);
+  const selectedItemToMovePath = useSelector(state => state.itemsContainer.selectedItemToMovePath);
 
 
   // move fs history backward
@@ -67,12 +69,27 @@ const ControlBtns = props => {
       <Fab color="primary" aria-label="add" onClick={handleGoBackward} disabled={!backwardAllowed}>
         <ArrowBack />
       </Fab>
-      <Fab color="primary" aria-label="add" onClick={handleGoForward} disabled={!forwardAllowed}>
+      <Fab color="primary" aria-label="forward" onClick={handleGoForward} disabled={!forwardAllowed}>
         <ArrowForward />
       </Fab>
-      <Fab color="secondary" aria-label="add" onClick={handleCreate}>
+      <Fab color="secondary" aria-label="backward" onClick={handleCreate}>
         <Add />
       </Fab>
+      { 
+        selectedItemToCopyPath
+        &&
+        <Fab color="error" aria-label="paste" onClick={handleCreate} disabled={currentPath === selectedItemToCopyPath.slice(0, selectedItemToCopyPath.lastIndexOf('\\'))}>
+          <ContentPaste />
+        </Fab>
+      }
+      {
+        selectedItemToMovePath
+        &&
+        <Fab color="error" aria-label="move" onClick={handleCreate} disabled={currentPath === selectedItemToMovePath.slice(0, selectedItemToMovePath.lastIndexOf('\\'))}>
+          <ContentPasteGo />
+        </Fab>
+      }
+      
     </Stack>
   );
 }

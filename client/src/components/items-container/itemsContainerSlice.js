@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
-import { httpCreateFileOrFolder, httpDeleteFileOrFolder, httpListDrives, httpNavigateFileSystem } from "../../requests/filesystem";
+import { httpCopyFileOrFolder, httpCreateFileOrFolder, httpDeleteFileOrFolder, httpListDrives, httpMoveFileOrFoler, httpNavigateFileSystem } from "../../requests/filesystem";
 
 const initialState = {
     items: [],
     currentPath: '',
     history: ['Home'],
+    selectedItemToCopyPath: null,
+    selectedItemToMovePath: null,
+    selectedItemToRenamePath: null,
 };
 
 export const fetchDrives = createAsyncThunk(
@@ -37,6 +40,20 @@ export const createItem = createAsyncThunk(
     }
 );
 
+export const copyItem = createAsyncThunk(
+    'ITEMS_CONTAINER/copy-item',
+    async({source, destination}) => {
+        return await httpCopyFileOrFolder(source, destination);
+    }
+);
+
+export const moveItem = createAsyncThunk(
+    'ITEMS_CONTAINER/move-item',
+    async({source, destination}) => {
+        return await httpMoveFileOrFoler(source, destination);
+    }
+)
+
 
 const ItemsContainerSlice = createSlice({
     name: 'ITEMS_CONTAINER',
@@ -62,6 +79,20 @@ const ItemsContainerSlice = createSlice({
         },
         setCurrentPath: (state, action) => {
             state.currentPath = action.payload;
+        },
+        setSelectedItemToCopyPath: (state, action) => {
+            state.selectedItemToCopyPath = action.payload;
+        },
+        setSelectedItemToMovePath: (state, action) => {
+            state.selectedItemToMovePath = action.payload;
+        },
+        setSelectedItemToRenamePath: (state, action) => {
+            state.selectedItemToRenamePath = action.payload;
+        },
+        resetSelectedItems: (state, action) => {
+            state.selectedItemToCopyPath = null;
+            state.selectedItemToMovePath = null;
+            state.selectedItemToRenamePath = null;
         }
     },
     extraReducers: (builder) => {
@@ -103,5 +134,9 @@ export const {
     forwardPath,
     setHistory,
     setCurrentPath,
+    setSelectedItemToCopyPath,
+    setSelectedItemToMovePath,
+    setSelectedItemToRenamePath,
+    resetSelectedItems,
 } = actions;
 export default reducer;
