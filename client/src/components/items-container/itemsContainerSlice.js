@@ -111,10 +111,7 @@ const ItemsContainerSlice = createSlice({
             .addCase(createItem.fulfilled, (state, action) => {
                 const result = action.payload.data;
                 if (result.done) {
-                    const itemToAdd = result.target.item;
-
-                    //const items = JSON.parse(JSON.stringify(current(state.items)));
-                    state.items.push({meta: itemToAdd});
+                    state.items.push({meta: result.target.item});
                 }
             })
             .addCase(deleteItem.fulfilled, (state, { meta }) => {
@@ -122,7 +119,18 @@ const ItemsContainerSlice = createSlice({
                 const items = JSON.parse(JSON.stringify(current(state.items))).filter(i => i.meta.item !== name);
                 state.items = items;
             })
-
+            .addCase(copyItem.fulfilled, (state, action) => {
+                const result = action.payload.data;
+                if (result.done) {
+                    state.items.push({meta: result.target.item});
+                }
+            })
+            .addCase(moveItem.fulfilled, (state, action) => {
+                const result = action.payload.data;
+                if (result.done) {
+                    state.items.push({meta: result.target.item});
+                }
+            })
     }
 });
 

@@ -34,7 +34,10 @@ const FileItem = props => {
             dispatch(setBackwardAllowed(false));
             dispatch(setHistory(["Home"]));
         }
-        dispatch(forwardPath(meta.item));
+
+        if (!meta?.isFile) {
+            dispatch(forwardPath(meta.item));
+        }
     }
 
     // delete handler

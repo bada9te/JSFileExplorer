@@ -2,9 +2,10 @@ import { Add, ArrowBack, ArrowForward, ContentPaste, ContentPasteGo } from "@mui
 import { Fab, Stack } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDrives, navigateFS, setCurrentPath } from "../items-container/itemsContainerSlice";
+import { fetchDrives, navigateFS, resetSelectedItems, setCurrentPath } from "../items-container/itemsContainerSlice";
 import { setIsOpen as setCreateItemModalIsShowing } from "../move-copy-modal/createItemModalSlice";
 import { setBackwardAllowed, setForwardAllowed } from "./controlBtnsSlice";
+import { copyItem, moveItem } from "../items-container/itemsContainerSlice";
 
 
 const ControlBtns = props => {
@@ -48,6 +49,24 @@ const ControlBtns = props => {
   const handleCreate = () => {
     dispatch(setCreateItemModalIsShowing(true));
   }
+  
+  // copy (paste)
+  const handlePaste = () => {
+    dispatch(copyItem({
+      source: selectedItemToCopyPath, 
+      destination: `${currentPath}\\${selectedItemToCopyPath.slice(selectedItemToCopyPath.lastIndexOf('\\', selectedItemToCopyPath.length))}`,
+    }));
+    dispatch(resetSelectedItems());
+  }
+
+  // move
+  const handleMove = () => {
+    dispatch(moveItem({
+      source: selectedItemToMovePath, 
+      destination: `${currentPath}\\${selectedItemToMovePath.slice(selectedItemToMovePath.lastIndexOf('\\', selectedItemToMovePath.length))}`,
+    }));
+    dispatch(resetSelectedItems());
+  }
 
 
   useEffect(() => {
@@ -78,14 +97,14 @@ const ControlBtns = props => {
       { 
         selectedItemToCopyPath
         &&
-        <Fab color="error" aria-label="paste" onClick={handleCreate} disabled={currentPath === selectedItemToCopyPath.slice(0, selectedItemToCopyPath.lastIndexOf('\\'))}>
+        <Fab color="error" aria-label="paste" onClick={handlePaste} disabled={currentPath === selectedItemToCopyPath.slice(0, selectedItemToCopyPath.lastIndexOf('\\'))}>
           <ContentPaste />
         </Fab>
       }
       {
         selectedItemToMovePath
         &&
-        <Fab color="error" aria-label="move" onClick={handleCreate} disabled={currentPath === selectedItemToMovePath.slice(0, selectedItemToMovePath.lastIndexOf('\\'))}>
+        <Fab color="error" aria-label="move" onClick={handleMove} disabled={currentPath === selectedItemToMovePath.slice(0, selectedItemToMovePath.lastIndexOf('\\'))}>
           <ContentPasteGo />
         </Fab>
       }

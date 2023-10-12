@@ -140,13 +140,24 @@ const copyFileOrFolder = (req, res, next) => {
         // normalize
         const normalizedSource = path.normalize(requestedSource);
         const normalizedDestination = path.normalize(requestedDestination);
+
+        console.log(normalizedSource, normalizedDestination)
         // copy
         fs.cpSync(normalizedSource, normalizedDestination, { recursive: type === "folder" ? true : false });
+
+        const stat = fs.statSync(normalizedDestination);
+        const item = {
+            item: normalizedDestination.slice(normalizedDestination.lastIndexOf(path.sep), normalizedDestination.length).slice(1), 
+            ...stat, 
+            isFile: stat.isFile(), 
+            isDirectory: stat.isDirectory()
+        };
         // ok
         return res.status(200).json({
             target: {
                 source: normalizedSource,
                 destination: normalizedDestination,
+                item,
             },
             done: true,
         });
@@ -170,11 +181,20 @@ const moveFileOrFolder = (req, res, next) => {
         const normalizedDestination = path.normalize(requestedDestination);
         // move
         fs.renameSync(normalizedSource, normalizedDestination);
+
+        const stat = fs.statSync(normalizedDestination);
+        const item = {
+            item: normalizedDestination.slice(normalizedDestination.lastIndexOf(path.sep), normalizedDestination.length).slice(1),
+            ...stat, 
+            isFile: stat.isFile(), 
+            isDirectory: stat.isDirectory()
+        };
         // ok
         return res.status(200).json({
             target: {
                 source: normalizedSource,
                 destination: normalizedDestination,
+                item,
             },
             done: true,
         });
