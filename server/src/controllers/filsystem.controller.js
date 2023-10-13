@@ -141,9 +141,8 @@ const copyFileOrFolder = (req, res, next) => {
         const normalizedSource = path.normalize(requestedSource);
         const normalizedDestination = path.normalize(requestedDestination);
 
-        console.log(normalizedSource, normalizedDestination)
         // copy
-        fs.cpSync(normalizedSource, normalizedDestination, { recursive: type === "folder" ? true : false });
+        fs.cpSync(normalizedSource, normalizedDestination, { recursive: fs.statSync(normalizedSource).isDirectory() });
 
         const stat = fs.statSync(normalizedDestination);
         const item = {

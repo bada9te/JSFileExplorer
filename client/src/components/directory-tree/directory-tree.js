@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTree, fetchSubTree as fetchST } from './directoryTreeSlice';
 import { Box } from '@mui/material';
+import FolderImage from "../../images/folder.png";
+import FolderImageOpened from "../../images/folder_opened.png";
 
 
 const TreeRecursiveItem = props => {
@@ -86,8 +88,8 @@ const DirectoryTree = props => {
         }}>
 
             <TreeView
-                defaultCollapseIcon={<FolderOpen/>}
-                defaultExpandIcon={<Folder/>}
+                defaultCollapseIcon={<img src={FolderImageOpened} width="16px"></img>}
+                defaultExpandIcon={<img src={FolderImage} width="16px"></img>}
                 style={{marginLeft: '20px'}}
             >
                 <TreeRecursiveItem tree={tree} path={treePath}/>
