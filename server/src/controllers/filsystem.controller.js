@@ -115,7 +115,7 @@ const deleteFileOrFolder = (req, res, next) => {
         const normalizedPath = path.normalize(requestedPath);
         fs.rmSync(normalizedPath, { recursive: type === "folder" ? true : false });
         // ok
-        return res.status(204).json({
+        return res.status(201).json({
             target: {
                 path: normalizedPath,
             },

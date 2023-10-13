@@ -6,6 +6,7 @@ import { fetchDrives, navigateFS, resetSelectedItems, setCurrentPath } from "../
 import { setIsOpen as setCreateItemModalIsShowing } from "../move-copy-modal/createItemModalSlice";
 import { setBackwardAllowed, setForwardAllowed } from "./controlBtnsSlice";
 import { copyItem, moveItem } from "../items-container/itemsContainerSlice";
+import { setIsShowing, setText } from "../notification/notificationSlice";
 
 
 const ControlBtns = props => {
@@ -57,6 +58,8 @@ const ControlBtns = props => {
       destination: `${currentPath}\\${selectedItemToCopyPath.slice(selectedItemToCopyPath.lastIndexOf('\\', selectedItemToCopyPath.length))}`,
     }));
     dispatch(resetSelectedItems());
+    dispatch(setText("Item copied"));
+    dispatch(setIsShowing(true));
   }
 
   // move
@@ -66,6 +69,8 @@ const ControlBtns = props => {
       destination: `${currentPath}\\${selectedItemToMovePath.slice(selectedItemToMovePath.lastIndexOf('\\', selectedItemToMovePath.length))}`,
     }));
     dispatch(resetSelectedItems());
+    dispatch(setText("Item moved"));
+    dispatch(setIsShowing(true));
   }
 
 

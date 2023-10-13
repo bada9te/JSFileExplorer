@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import DirectoryTree from './components/directory-tree/directory-tree';
 import CreateItemModal from './components/move-copy-modal/create-item-modal';
 import ItemsContainer from "./components/items-container/items-container";
+import SimpleSnackbar from './components/notification/notification';
 
 
 
@@ -98,6 +99,7 @@ const App = props => {
       <CssBaseline />
       <CreateItemModal/>
       <ControlBtns/>
+      <SimpleSnackbar/>
       <AppBar
         position="fixed"
         sx={{

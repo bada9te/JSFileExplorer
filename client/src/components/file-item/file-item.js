@@ -7,6 +7,8 @@ import { copyItem, deleteItem, forwardPath, resetSelectedItems, setHistory, setS
 import { useState } from "react";
 import { ContentCopyOutlined, DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline } from '@mui/icons-material';
 import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBtnsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { setIsShowing, setText } from "../notification/notificationSlice";
 
 const FileItem = props => {
     const {meta} = props;
@@ -41,8 +43,16 @@ const FileItem = props => {
     }
 
     // delete handler
-    const deleteHandler = () => {
-        dispatch(deleteItem({item: meta.item, isFolder: meta.isDirectory}));
+    const deleteHandler = async() => {
+        dispatch(deleteItem({item: meta.item, isFolder: meta.isDirectory}))
+            .then(unwrapResult)
+            .then(result => {
+                console.log(result)
+                if (result.data.done) {
+                    dispatch(setText("Item removed"));
+                    dispatch(setIsShowing(true));
+                }
+            });
         handleClose();
     }
     // copy handler
