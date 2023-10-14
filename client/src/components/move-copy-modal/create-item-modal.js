@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsOpen } from './createItemModalSlice';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { createItem } from '../items-container/itemsContainerSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { fetchSubTree } from '../directory-tree/directoryTreeSlice';
 
 export default function CreateItemModal() {
     const dispatch = useDispatch();
@@ -29,6 +31,12 @@ export default function CreateItemModal() {
         const isFolder = checkboxRef.current.checked;
         
         dispatch(createItem({path: currentPath, name, isFolder}))
+            .then(unwrapResult)
+            .then(result => {
+                if (result.data.done) {
+                    dispatch(fetchSubTree(currentPath.slice(0, currentPath.length - 1)));
+                }
+            });
     }
 
 

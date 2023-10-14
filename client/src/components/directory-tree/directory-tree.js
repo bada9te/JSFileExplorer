@@ -1,12 +1,12 @@
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
-import { FolderOpen, Folder } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTree, fetchSubTree as fetchST } from './directoryTreeSlice';
 import { Box } from '@mui/material';
 import FolderImage from "../../images/folder.png";
 import FolderImageOpened from "../../images/folder_opened.png";
+import { defaultStyles, FileIcon } from 'react-file-icon';
 
 
 const TreeRecursiveItem = props => {
@@ -51,8 +51,10 @@ const TreeRecursiveItem = props => {
                                     </TreeItem>
                                 );
                             } else {
+                                let extension = key.split('.');
+                                extension = extension.length > 1 ? extension[extension.length - 1] : extension[0];
                                 return (
-                                    <TreeItem key={i} nodeId={key} label={key}/>
+                                    <TreeItem key={i} nodeId={key} label={key} icon={<FileIcon extension={extension} {...defaultStyles[extension]} />}/>
                                 );
                             }
                         }) 

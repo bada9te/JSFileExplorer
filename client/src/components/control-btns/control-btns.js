@@ -7,6 +7,8 @@ import { setIsOpen as setCreateItemModalIsShowing } from "../move-copy-modal/cre
 import { setBackwardAllowed, setForwardAllowed } from "./controlBtnsSlice";
 import { copyItem, moveItem } from "../items-container/itemsContainerSlice";
 import { setIsShowing, setText } from "../notification/notificationSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { fetchSubTree } from "../directory-tree/directoryTreeSlice";
 
 
 const ControlBtns = props => {
@@ -56,7 +58,13 @@ const ControlBtns = props => {
     dispatch(copyItem({
       source: selectedItemToCopyPath, 
       destination: `${currentPath}\\${selectedItemToCopyPath.slice(selectedItemToCopyPath.lastIndexOf('\\', selectedItemToCopyPath.length))}`,
-    }));
+    }))
+      .then(unwrapResult)
+      .then(result => {
+        if (result.data.done) {
+          dispatch(fetchSubTree(currentPath.slice(0, currentPath.length - 1)));
+        }
+      });
     dispatch(resetSelectedItems());
     dispatch(setText("Item copied"));
     dispatch(setIsShowing(true));
@@ -67,7 +75,13 @@ const ControlBtns = props => {
     dispatch(moveItem({
       source: selectedItemToMovePath, 
       destination: `${currentPath}\\${selectedItemToMovePath.slice(selectedItemToMovePath.lastIndexOf('\\', selectedItemToMovePath.length))}`,
-    }));
+    }))
+      .then(unwrapResult)
+      .then(result => {
+        if (result.data.done) {
+          dispatch(fetchSubTree(currentPath.slice(0, currentPath.length - 1)));
+        }
+      });
     dispatch(resetSelectedItems());
     dispatch(setText("Item moved"));
     dispatch(setIsShowing(true));

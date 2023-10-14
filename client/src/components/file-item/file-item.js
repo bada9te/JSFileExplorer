@@ -9,6 +9,7 @@ import { ContentCopyOutlined, DeleteOutline, DriveFileMoveOutlined, DriveFileRen
 import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBtnsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { setIsShowing, setText } from "../notification/notificationSlice";
+import { fetchSubTree } from "../directory-tree/directoryTreeSlice";
 
 const FileItem = props => {
     const {meta} = props;
@@ -51,6 +52,7 @@ const FileItem = props => {
                 if (result.data.done) {
                     dispatch(setText("Item removed"));
                     dispatch(setIsShowing(true));
+                    dispatch(fetchSubTree(currentPath.slice(0, currentPath.length - 1)));
                 }
             });
         handleClose();
