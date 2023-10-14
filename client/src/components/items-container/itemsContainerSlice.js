@@ -52,7 +52,15 @@ export const moveItem = createAsyncThunk(
     async({source, destination}) => {
         return await httpMoveFileOrFoler(source, destination);
     }
+);
+
+export const renameItem = createAsyncThunk(
+    'ITEMS_CONTAINER/rename-item',
+    async({source, destination}) => {
+        return await httpMoveFileOrFoler(source, destination);
+    }
 )
+
 
 
 const ItemsContainerSlice = createSlice({
@@ -129,6 +137,19 @@ const ItemsContainerSlice = createSlice({
                 const result = action.payload.data;
                 if (result.done) {
                     state.items.push({meta: result.target.item});
+                }
+            })
+            .addCase(renameItem.fulfilled, (state, action) => {
+                const result = action.payload.data;
+                if (result.done) {
+                    const source = action.meta.arg.source;
+                    const prevName = source.slice(source.lastIndexOf('\\'), source.length).slice(1);
+                    console.log(source, prevName);
+
+                    let items = JSON.parse(JSON.stringify(current(state.items))).filter(i => i.meta.item !== prevName);
+                    items.push({meta: result.target.item});
+
+                    state.items = items;
                 }
             })
     }

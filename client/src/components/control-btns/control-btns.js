@@ -63,11 +63,11 @@ const ControlBtns = props => {
       .then(result => {
         if (result.data.done) {
           dispatch(fetchSubTree(currentPath.slice(0, currentPath.length - 1)));
+          dispatch(setText("Item copied"));
+          dispatch(setIsShowing(true));
         }
       });
     dispatch(resetSelectedItems());
-    dispatch(setText("Item copied"));
-    dispatch(setIsShowing(true));
   }
 
   // move
@@ -80,11 +80,11 @@ const ControlBtns = props => {
       .then(result => {
         if (result.data.done) {
           dispatch(fetchSubTree(currentPath.slice(0, currentPath.length - 1)));
+          dispatch(setText("Item moved"));
+          dispatch(setIsShowing(true));
         }
       });
     dispatch(resetSelectedItems());
-    dispatch(setText("Item moved"));
-    dispatch(setIsShowing(true));
   }
 
 

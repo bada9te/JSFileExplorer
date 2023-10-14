@@ -12,6 +12,7 @@ import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { createItem } from '../items-container/itemsContainerSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { fetchSubTree } from '../directory-tree/directoryTreeSlice';
+import { setIsShowing, setText } from '../notification/notificationSlice';
 
 export default function CreateItemModal() {
     const dispatch = useDispatch();
@@ -35,6 +36,8 @@ export default function CreateItemModal() {
             .then(result => {
                 if (result.data.done) {
                     dispatch(fetchSubTree(currentPath.slice(0, currentPath.length - 1)));
+                    dispatch(setText("Item created"));
+                    dispatch(setIsShowing(true));
                 }
             });
     }

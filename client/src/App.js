@@ -18,9 +18,10 @@ import LeftBarLink from './components/left-bar-link/left-bar-link';
 import ControlBtns from './components/control-btns/control-btns';
 import { useSelector } from 'react-redux';
 import DirectoryTree from './components/directory-tree/directory-tree';
-import CreateItemModal from './components/move-copy-modal/create-item-modal';
+import CreateItemModal from './components/create-item-modal/create-item-modal';
 import ItemsContainer from "./components/items-container/items-container";
 import SimpleSnackbar from './components/notification/notification';
+import RenameItemModal from './components/rename-item-modal/rename-item-modal';
 
 
 
@@ -98,6 +99,7 @@ const App = props => {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <CreateItemModal/>
+      <RenameItemModal/>
       <ControlBtns/>
       <SimpleSnackbar/>
       <AppBar
