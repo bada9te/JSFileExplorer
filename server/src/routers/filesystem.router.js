@@ -11,6 +11,7 @@ filesystemRouter.get('/path',   fsController.navigateFileSystem);
 filesystemRouter.get('/search', fsController.searchFilesAndFolders);
 filesystemRouter.get('/info',   fsController.getFileProperties);
 filesystemRouter.get('/tree',   fsController.getDirectoryTree);
+filesystemRouter.get('/open',   fsController.openFile);
 // POST
 filesystemRouter.post('/create', fsController.createFileOrFolder);
 filesystemRouter.post('/delete', fsController.deleteFileOrFolder);

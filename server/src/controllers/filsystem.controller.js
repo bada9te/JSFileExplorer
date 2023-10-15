@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { exec } = require('child_process');
 
 
 /*
@@ -334,19 +335,19 @@ const getDirectoryTree = (req, res, next) => {
 
 // open file on different os
 const openFile = (req, res, next) => {
-    const requestedPath = req.body.path;
+    const requestedPath = req.query.path;
 
     try {
-        const normalizedPath = path.normalize(requestedPath);
+        const filePath = path.normalize(requestedPath);
         switch (os.platform()) {
             case 'darwin':
-                exec(`open ${normalizedPath}`);
+                exec(`open "${filePath}"`);
                 break;
             case 'win32':
-                exec(`start ${normalizedPath}`);
+                exec(`start "" "${filePath}"`);
                 break;
             default:
-                exec(`xdg-open ${normalizedPath}`);
+                exec(`xdg-open "${filePath}"`);
                 break;
         }
         return res.status(200).json({

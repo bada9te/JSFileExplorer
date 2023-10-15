@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
-import { httpCopyFileOrFolder, httpCreateFileOrFolder, httpDeleteFileOrFolder, httpListDrives, httpMoveFileOrFoler, httpNavigateFileSystem } from "../../requests/filesystem";
+import { httpCopyFileOrFolder, httpCreateFileOrFolder, httpDeleteFileOrFolder, httpListDrives, httpMoveFileOrFoler, httpNavigateFileSystem, httpOpenFile } from "../../requests/filesystem";
 
 const initialState = {
     items: [],
@@ -58,6 +58,13 @@ export const renameItem = createAsyncThunk(
     'ITEMS_CONTAINER/rename-item',
     async({source, destination}) => {
         return await httpMoveFileOrFoler(source, destination);
+    }
+)
+
+export const openItem = createAsyncThunk(
+    'ITEMS_CONTAINER/open-item',
+    async(path) => {
+        return await httpOpenFile(path);
     }
 )
 

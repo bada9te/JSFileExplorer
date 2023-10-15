@@ -3,9 +3,9 @@ import { FileIcon, defaultStyles } from 'react-file-icon';
 import folderImage from "../../images/folder.png";
 import driveImage from "../../images/drive.png";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem, forwardPath, resetSelectedItems, setHistory, setSelectedItemToCopyPath, setSelectedItemToMovePath, setSelectedItemToRenamePath } from "../items-container/itemsContainerSlice";
+import { deleteItem, forwardPath, openItem, resetSelectedItems, setHistory, setSelectedItemToCopyPath, setSelectedItemToMovePath, setSelectedItemToRenamePath } from "../items-container/itemsContainerSlice";
 import { useState } from "react";
-import { ContentCopyOutlined, DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline } from '@mui/icons-material';
+import { ContentCopyOutlined, DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline, OpenInFullOutlined, PlayCircleOutline } from '@mui/icons-material';
 import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBtnsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { setIsShowing, setText } from "../notification/notificationSlice";
@@ -80,6 +80,22 @@ const FileItem = props => {
         handleClose();
     }
 
+    // open handler
+    const openHandler = () => {
+        handleClose();
+        dispatch(openItem(`${currentPath}\\${meta.item}`))
+            .then(unwrapResult)
+            .then(result => {
+                dispatch(setIsShowing(true));
+                if (result.data.done) {
+                    dispatch(setText("Item opened"));
+                } else {
+                    dispatch(setText("Can't open the item"));
+                }
+            });
+        
+    }
+
 
     return (
         <>
@@ -134,10 +150,13 @@ const FileItem = props => {
                 'aria-labelledby': 'basic-button',
             }}
         >
-            <MenuItem onClick={deleteHandler} disabled={meta?.isDrive}><DeleteOutline sx={{mr: 1}}/>Delete</MenuItem>
+            { !meta?.isDirectory && <MenuItem onClick={openHandler} disabled={meta?.isDrive}><PlayCircleOutline sx={{mr: 1}}/>Open</MenuItem> }
+            
             <MenuItem onClick={renameHandler} disabled={meta?.isDrive}><DriveFileRenameOutline sx={{mr: 1}}/>Rename</MenuItem>
             <MenuItem onClick={moveHandler} disabled={meta?.isDrive}><DriveFileMoveOutlined sx={{mr: 1}}/>Move</MenuItem>
             <MenuItem onClick={copyHandler} disabled={meta?.isDrive}><ContentCopyOutlined sx={{mr: 1}}/>Copy</MenuItem>
+            <MenuItem onClick={deleteHandler} disabled={meta?.isDrive}><DeleteOutline sx={{mr: 1}}/>Delete</MenuItem>
+
             { meta?.isDrive && <MenuItem onClick={handleClose}>File operations are not available on drives!</MenuItem> }
         </Menu>
         </>

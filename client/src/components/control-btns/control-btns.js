@@ -3,7 +3,7 @@ import { Fab, Stack } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDrives, navigateFS, resetSelectedItems, setCurrentPath } from "../items-container/itemsContainerSlice";
-import { setIsOpen as setCreateItemModalIsShowing } from "../move-copy-modal/createItemModalSlice";
+import { setIsOpen as setCreateItemModalIsShowing } from "../create-item-modal/createItemModalSlice";
 import { setBackwardAllowed, setForwardAllowed } from "./controlBtnsSlice";
 import { copyItem, moveItem } from "../items-container/itemsContainerSlice";
 import { setIsShowing, setText } from "../notification/notificationSlice";

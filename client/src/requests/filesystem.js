@@ -77,6 +77,15 @@ const httpMoveFileOrFoler = async(source, destination) => {
     });
 }
 
+// open file
+const httpOpenFile = async(path) => {
+    return await axios.get(`${API_URL}/open`, {
+        params: {
+            path,
+        },
+    });
+}
+
 
 
 export {
@@ -86,6 +95,7 @@ export {
     httpSearchFilesAndFolders,
     httpGetFileProps,
     httpGetDirectoryTree,
+    httpOpenFile,
 
     // post
     httpCreateFileOrFolder,
