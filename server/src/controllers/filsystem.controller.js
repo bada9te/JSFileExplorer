@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 
 /*
@@ -331,6 +332,31 @@ const getDirectoryTree = (req, res, next) => {
 }
 
 
+// open file on different os
+const openFile = (req, res, next) => {
+    const requestedPath = req.body.path;
+
+    try {
+        const normalizedPath = path.normalize(requestedPath);
+        switch (os.platform()) {
+            case 'darwin':
+                exec(`open ${normalizedPath}`);
+                break;
+            case 'win32':
+                exec(`start ${normalizedPath}`);
+                break;
+            default:
+                exec(`xdg-open ${normalizedPath}`);
+                break;
+        }
+        return res.status(200).json({
+            done: true,
+        });
+    } catch (error) {
+        return next(error);
+    }
+}
+
 
 
 
@@ -344,4 +370,5 @@ module.exports = {
     searchFilesAndFolders,
     getFileProperties,
     getDirectoryTree,
+    openFile,
 };
