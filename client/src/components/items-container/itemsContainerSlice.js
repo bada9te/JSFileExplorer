@@ -5,6 +5,7 @@ const initialState = {
     items: [],
     currentPath: '',
     history: ['Home'],
+    searchQuery: '',
     selectedItemToCopyPath: null,
     selectedItemToMovePath: null,
     selectedItemToRenamePath: null,
@@ -108,6 +109,9 @@ const ItemsContainerSlice = createSlice({
             state.selectedItemToCopyPath = null;
             state.selectedItemToMovePath = null;
             state.selectedItemToRenamePath = null;
+        },
+        setSearchQuery: (state, action) => {
+            state.searchQuery = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -174,5 +178,6 @@ export const {
     setSelectedItemToMovePath,
     setSelectedItemToRenamePath,
     resetSelectedItems,
+    setSearchQuery,
 } = actions;
 export default reducer;

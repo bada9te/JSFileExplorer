@@ -16,12 +16,13 @@ import { Home, Route, SearchRounded } from '@mui/icons-material';
 import folderImage from "./images/folder.png";
 import LeftBarLink from './components/left-bar-link/left-bar-link';
 import ControlBtns from './components/control-btns/control-btns';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DirectoryTree from './components/directory-tree/directory-tree';
 import CreateItemModal from './components/create-item-modal/create-item-modal';
 import ItemsContainer from "./components/items-container/items-container";
 import SimpleSnackbar from './components/notification/notification';
 import RenameItemModal from './components/rename-item-modal/rename-item-modal';
+import { setSearchQuery } from './components/items-container/itemsContainerSlice';
 
 
 
@@ -65,11 +66,26 @@ const drawerWidth = 240;
 const App = props => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [searchText, setSearchText] = React.useState("");
   const currentPath = useSelector(state => state.itemsContainer.currentPath);
+  const dispatch = useDispatch();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const queryTextChangeHandler = (e) => {
+    setSearchText(e.target.value);
+  }
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(setSearchQuery(searchText));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [searchText]);
+
 
   const drawer = (
     <div>
@@ -142,6 +158,7 @@ const App = props => {
                   <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
+                    onChange={queryTextChangeHandler}
                   />
                 </Search>
               </Grid>

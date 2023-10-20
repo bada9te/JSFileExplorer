@@ -5,7 +5,7 @@ import driveImage from "../../images/drive.png";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItem, forwardPath, openItem, resetSelectedItems, setHistory, setSelectedItemToCopyPath, setSelectedItemToMovePath, setSelectedItemToRenamePath } from "../items-container/itemsContainerSlice";
 import { useState } from "react";
-import { ContentCopyOutlined, DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline, OpenInFullOutlined, PlayCircleOutline } from '@mui/icons-material';
+import { ContentCopyOutlined, DeleteOutline, DriveFileMoveOutlined, DriveFileRenameOutline, InfoOutlined, OpenInFullOutlined, PlayCircleOutline } from '@mui/icons-material';
 import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBtnsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { setIsShowing, setText } from "../notification/notificationSlice";
@@ -151,7 +151,8 @@ const FileItem = props => {
             }}
         >
             { !meta?.isDirectory && <MenuItem onClick={openHandler} disabled={meta?.isDrive}><PlayCircleOutline sx={{mr: 1}}/>Open</MenuItem> }
-            
+
+            <MenuItem onClick={() => {}} disabled={meta?.isDrive}><InfoOutlined sx={{mr: 1}}/>Info</MenuItem>
             <MenuItem onClick={renameHandler} disabled={meta?.isDrive}><DriveFileRenameOutline sx={{mr: 1}}/>Rename</MenuItem>
             <MenuItem onClick={moveHandler} disabled={meta?.isDrive}><DriveFileMoveOutlined sx={{mr: 1}}/>Move</MenuItem>
             <MenuItem onClick={copyHandler} disabled={meta?.isDrive}><ContentCopyOutlined sx={{mr: 1}}/>Copy</MenuItem>

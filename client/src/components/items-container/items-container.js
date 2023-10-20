@@ -5,10 +5,11 @@ import FileItem from "../file-item/file-item";
 import { fetchDrives, navigateFS } from "./itemsContainerSlice";
 
 const ItemsContainer = props => {
-    const {status} = props;
+    //const {status} = props;
     const dispatch = useDispatch();
     const items = useSelector(state => state.itemsContainer.items);
     const currentPath = useSelector(state => state.itemsContainer.currentPath);
+    const searchQuery = useSelector(state => state.itemsContainer.searchQuery);
 
     useEffect(() => {
         dispatch(fetchDrives());
@@ -28,9 +29,20 @@ const ItemsContainer = props => {
             alignItems: 'start',
         }} direction="row" useFlexGap flexWrap="wrap">
             {
-                items.map((item, i) => {
-                    return (<FileItem key={i} meta={item.meta} path={`${currentPath}\\${item.meta.item}`}/>);
-                })
+                (() => {
+                    if (searchQuery !== "") {
+                        return items
+                            .filter(item => item.meta.item.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1)
+                            .map((item, i) => {
+                                return (<FileItem key={i} meta={item.meta} path={`${currentPath}\\${item.meta.item}`}/>);
+                            });
+                    } else {
+                        return items
+                            .map((item, i) => {
+                                return (<FileItem key={i} meta={item.meta} path={`${currentPath}\\${item.meta.item}`}/>);
+                            });
+                    }
+                })()
             }
         </Stack>
     );
