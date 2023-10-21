@@ -5,6 +5,7 @@ import directoryTreeSlice from "../components/directory-tree/directoryTreeSlice"
 import createItemModalSlice from "../components/create-item-modal/createItemModalSlice";
 import notificationSlice from "../components/notification/notificationSlice";
 import renameItemModalSlice from "../components/rename-item-modal/renameItemModalSlice";
+import itemInfoModalSlice from "../components/item-info-modal/itemInfoModalSlice";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         createItemModal: createItemModalSlice,
         notification: notificationSlice,
         renameItemModal: renameItemModalSlice,
+        itemInfoModal: itemInfoModalSlice, 
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
     devTools: process.env.REACT_APP_VERSION_TYPE === "production" ? false : true,

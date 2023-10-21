@@ -10,7 +10,8 @@ import { setBackwardAllowed, setForwardAllowed } from "../control-btns/controlBt
 import { unwrapResult } from "@reduxjs/toolkit";
 import { setIsShowing, setText } from "../notification/notificationSlice";
 import { fetchSubTree } from "../directory-tree/directoryTreeSlice";
-import { setIsOpen } from "../rename-item-modal/renameItemModalSlice";
+import { setIsOpen as setRenameItemModalIsOpen } from "../rename-item-modal/renameItemModalSlice";
+import { setTarget, setIsOpen as setItemInfoModalIsOpen } from "../item-info-modal/itemInfoModalSlice";
 
 const FileItem = props => {
     const {meta} = props;
@@ -76,7 +77,7 @@ const FileItem = props => {
     const renameHandler = () => {
         dispatch(resetSelectedItems());
         dispatch(setSelectedItemToRenamePath(`${currentPath}\\${meta.item}`));
-        dispatch(setIsOpen(true));
+        dispatch(setRenameItemModalIsOpen(true));
         handleClose();
     }
 
@@ -94,6 +95,13 @@ const FileItem = props => {
                 }
             });
         
+    }
+
+    // show file info
+    const showFileInfo = () => {
+        handleClose();
+        dispatch(setTarget(meta));
+        dispatch(setItemInfoModalIsOpen(true));
     }
 
 
@@ -152,7 +160,7 @@ const FileItem = props => {
         >
             { !meta?.isDirectory && <MenuItem onClick={openHandler} disabled={meta?.isDrive}><PlayCircleOutline sx={{mr: 1}}/>Open</MenuItem> }
 
-            <MenuItem onClick={() => {}} disabled={meta?.isDrive}><InfoOutlined sx={{mr: 1}}/>Info</MenuItem>
+            <MenuItem onClick={showFileInfo} disabled={meta?.isDrive}><InfoOutlined sx={{mr: 1}}/>Info</MenuItem>
             <MenuItem onClick={renameHandler} disabled={meta?.isDrive}><DriveFileRenameOutline sx={{mr: 1}}/>Rename</MenuItem>
             <MenuItem onClick={moveHandler} disabled={meta?.isDrive}><DriveFileMoveOutlined sx={{mr: 1}}/>Move</MenuItem>
             <MenuItem onClick={copyHandler} disabled={meta?.isDrive}><ContentCopyOutlined sx={{mr: 1}}/>Copy</MenuItem>

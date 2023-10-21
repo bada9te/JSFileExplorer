@@ -23,6 +23,7 @@ import ItemsContainer from "./components/items-container/items-container";
 import SimpleSnackbar from './components/notification/notification';
 import RenameItemModal from './components/rename-item-modal/rename-item-modal';
 import { setSearchQuery } from './components/items-container/itemsContainerSlice';
+import ItemInfoModal from './components/item-info-modal/item-info-modal';
 
 
 
@@ -116,6 +117,7 @@ const App = props => {
       <CssBaseline />
       <CreateItemModal/>
       <RenameItemModal/>
+      <ItemInfoModal/>
       <ControlBtns/>
       <SimpleSnackbar/>
       <AppBar
