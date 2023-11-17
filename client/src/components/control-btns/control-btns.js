@@ -100,7 +100,7 @@ const ControlBtns = props => {
     } else {
       dispatch(setForwardAllowed(false));
     }
-  }, [currentPath]);
+  }, [currentPath, dispatch, history]);
 
   return (
     <Stack sx={{ position: 'fixed', bottom: 15, right: 15, zIndex: 1, width: '92vw', display: 'flex', justifyContent: {xs: 'center', md: 'flex-end'}}} direction="row" spacing={1}>
@@ -110,7 +110,7 @@ const ControlBtns = props => {
       <Fab color="primary" aria-label="forward" onClick={handleGoForward} disabled={!forwardAllowed}>
         <ArrowForward />
       </Fab>
-      <Fab color="secondary" aria-label="backward" onClick={handleCreate}>
+      <Fab color="secondary" aria-label="backward" onClick={handleCreate} disabled={currentPath === ""}>
         <Add />
       </Fab>
       { 

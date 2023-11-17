@@ -39,6 +39,10 @@ export default function CreateItemModal() {
                     dispatch(setText("Item created"));
                     dispatch(setIsShowing(true));
                 }
+            })
+            .catch(err => {
+                dispatch(setText("Sorry, item can't be created here :("));
+                dispatch(setIsShowing(true));
             });
     }
 

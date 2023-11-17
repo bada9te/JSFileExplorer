@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormGroup, Stack, TextField } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpen } from "./itemInfoModalSlice";
 
@@ -31,44 +31,51 @@ export default function ItemInfoModal() {
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <DialogTitle>{target.item}</DialogTitle>
-            <DialogContent>
-                <Stack spacing={2}>
-                    <Box>
-                        <DialogContentText sx={{fontWeight: 'bold'}}>Type:</DialogContentText>
-                        <DialogContentText>
-                            {
-                                (() => {
-                                    if (target.isFile) {
-                                        return "File";
-                                    } else if (target.isDirectory) {
-                                        return "Directory";
-                                    } else if (target.isDrive) {
-                                        return "Drive";
-                                    } else {
-                                        return "Unknown";
-                                    }
-                                })()
-                            }
-                        </DialogContentText>
-                    </Box>
+            {
+                target
+                &&
+                <>
+                <DialogTitle>{target?.item}</DialogTitle>
+                <DialogContent>
+                    <Stack spacing={2}>
+                        <Box>
+                            <DialogContentText sx={{fontWeight: 'bold'}}>Type:</DialogContentText>
+                            <DialogContentText>
+                                {
+                                    (() => {
+                                        if (target?.isFile) {
+                                            return "File";
+                                        } else if (target?.isDirectory) {
+                                            return "Directory";
+                                        } else if (target?.isDrive) {
+                                            return "Drive";
+                                        } else {
+                                            return "Unknown";
+                                        }
+                                    })()
+                                }
+                            </DialogContentText>
+                        </Box>
 
-                    <Box>
-                        <DialogContentText sx={{fontWeight: 'bold'}}>Created at:</DialogContentText>
-                        <DialogContentText>{toNormalDate(target.birthtime)}</DialogContentText>
-                    </Box>
+                        <Box>
+                            <DialogContentText sx={{fontWeight: 'bold'}}>Created at:</DialogContentText>
+                            <DialogContentText>{toNormalDate(target?.birthtime)}</DialogContentText>
+                        </Box>
 
-                    <Box>
-                        <DialogContentText sx={{fontWeight: 'bold'}}>Modified at:</DialogContentText>
-                        <DialogContentText>{toNormalDate(target.mtime)}</DialogContentText>
-                    </Box>
+                        <Box>
+                            <DialogContentText sx={{fontWeight: 'bold'}}>Modified at:</DialogContentText>
+                            <DialogContentText>{toNormalDate(target?.mtime)}</DialogContentText>
+                        </Box>
 
-                    <Box>
-                        <DialogContentText sx={{fontWeight: 'bold'}}>Size:</DialogContentText>
-                        <DialogContentText>{target.isDirectory || target.isDrive ? "Unknown" : target.size}</DialogContentText>
-                    </Box>
-                </Stack>
-            </DialogContent>
+                        <Box>
+                            <DialogContentText sx={{fontWeight: 'bold'}}>Size:</DialogContentText>
+                            <DialogContentText>{target?.isDirectory || target?.isDrive ? "Unknown" : target.size}</DialogContentText>
+                        </Box>
+                    </Stack>
+                </DialogContent>
+                </>
+
+            }
             <DialogActions>
                 <Button onClick={handleClose}>Ok</Button>
             </DialogActions>
