@@ -135,8 +135,7 @@ copyFileOrFolder(sourcePath, destinationPath): Функція для копію�
 const copyFileOrFolder = (req, res, next) => {
     // get POST args
     const requestedSource = req.body.source,
-        requestedDestination = req.body.destination,
-        type = req.body.type;
+        requestedDestination = req.body.destination;
     
     try {
         // normalize
