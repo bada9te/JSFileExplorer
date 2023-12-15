@@ -7,6 +7,7 @@ import { Box } from '@mui/material';
 import FolderImage from "../../images/folder.png";
 import FolderImageOpened from "../../images/folder_opened.png";
 import { defaultStyles, FileIcon } from 'react-file-icon';
+import { appendToHistory, openItem, setCurrentPath } from '../items-container/itemsContainerSlice';
 
 
 const TreeRecursiveItem = props => {
@@ -14,8 +15,14 @@ const TreeRecursiveItem = props => {
     const dispatch = useDispatch();
 
     const fetchSubTree = (path) => {
-        //console.log(`${path}`)
         dispatch(fetchST(path));
+        path = path.slice(0, String(path).indexOf('\\')) + path.slice(String(path).indexOf('\\') + 1, path.length)
+        dispatch(appendToHistory(path));
+        dispatch(setCurrentPath(path));
+    }
+
+    const openFile = (path) => {
+        dispatch(openItem(path));
     }
 
     return (
@@ -54,7 +61,7 @@ const TreeRecursiveItem = props => {
                                 let extension = key.split('.');
                                 extension = extension.length > 1 ? extension[extension.length - 1] : extension[0];
                                 return (
-                                    <TreeItem key={i} nodeId={key} label={key} icon={<FileIcon extension={extension} {...defaultStyles[extension]} />}/>
+                                    <TreeItem onClick={() => {openFile(`${path}\\${key}`)}} key={i} nodeId={key} label={key} icon={<FileIcon extension={extension} {...defaultStyles[extension]} />}/>
                                 );
                             }
                         }) 
@@ -68,13 +75,16 @@ const TreeRecursiveItem = props => {
 
 
 const DirectoryTree = props => {
+    // отримання значень із глобального стану компонентів застосунку
     const currentPath = useSelector(state => state.itemsContainer.currentPath);
     const history = useSelector(state => state.itemsContainer.history);
     const tree = useSelector(state => state.directoryTree.tree);
     
+    // локальні змінні
     const [treePath, setTreePath] = useState();
     const dispatch = useDispatch();
 
+    // логіка підвантаження піддиректорій
     useEffect(() => {
         if (history.length < 3) {
             setTreePath(currentPath);
@@ -82,7 +92,7 @@ const DirectoryTree = props => {
         }
     }, [currentPath, history]);
 
-    
+    // відображення
     return (
         <Box sx={{
             height: 'calc(100vh - 140px)',
@@ -103,14 +113,3 @@ const DirectoryTree = props => {
 export default DirectoryTree;
 
 
-/*
-<TreeItem nodeId="root" label="Current folder">
-    <TreeItem nodeId="folder1" label="Folder 1">
-        <TreeItem nodeId="file1" label="File 1" />
-        <TreeItem nodeId="file2" label="File 2" />
-    </TreeItem>
-    <TreeItem nodeId="folder2" label="Folder 2">
-        <TreeItem nodeId="file3" label="File 3" />
-    </TreeItem>
-</TreeItem>
-*/

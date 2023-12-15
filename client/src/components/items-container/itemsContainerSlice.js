@@ -93,6 +93,11 @@ const ItemsContainerSlice = createSlice({
         setHistory: (state, action) => {
             state.history = action.payload;
         },
+        appendToHistory: (state, action) => {
+            const hs = JSON.parse(JSON.stringify(current(state.history)));
+            hs.push(action.payload);
+            state.history = hs;         
+        },
         setCurrentPath: (state, action) => {
             state.currentPath = action.payload;
         },
@@ -173,6 +178,7 @@ export const {
     setItems,
     forwardPath,
     setHistory,
+    appendToHistory,
     setCurrentPath,
     setSelectedItemToCopyPath,
     setSelectedItemToMovePath,
