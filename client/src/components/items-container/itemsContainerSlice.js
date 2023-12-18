@@ -95,8 +95,9 @@ const ItemsContainerSlice = createSlice({
         },
         appendToHistory: (state, action) => {
             const hs = JSON.parse(JSON.stringify(current(state.history)));
-            hs.push(action.payload);
-            state.history = hs;         
+            hs.push(action.payload + '\\');
+            state.history = hs;  
+            state.currentPath = action.payload + '\\';       
         },
         setCurrentPath: (state, action) => {
             state.currentPath = action.payload;

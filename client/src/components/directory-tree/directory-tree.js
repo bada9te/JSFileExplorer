@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import FolderImage from "../../images/folder.png";
 import FolderImageOpened from "../../images/folder_opened.png";
 import { defaultStyles, FileIcon } from 'react-file-icon';
-import { appendToHistory, openItem, setCurrentPath } from '../items-container/itemsContainerSlice';
+import { appendToHistory, navigateFS, openItem, setCurrentPath } from '../items-container/itemsContainerSlice';
 
 
 const TreeRecursiveItem = props => {
@@ -18,7 +18,8 @@ const TreeRecursiveItem = props => {
         dispatch(fetchST(path));
         path = path.slice(0, String(path).indexOf('\\')) + path.slice(String(path).indexOf('\\') + 1, path.length)
         dispatch(appendToHistory(path));
-        dispatch(setCurrentPath(path));
+        //dispatch(setCurrentPath(path));
+        //dispatch(navigateFS(path));
     }
 
     const openFile = (path) => {

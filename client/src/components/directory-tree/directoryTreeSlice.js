@@ -42,13 +42,20 @@ const DirectoryTreeSlice = createSlice({
                 let tree = JSON.parse(JSON.stringify(current(state.tree)));
                 let currentLevel = tree;
 
+                console.log(tree)
+
                 for (let i = 0; i < objectPath.length - 1; i++) {
                     const key = objectPath[i];
-                    currentLevel = currentLevel[key];
+                    if (currentLevel) 
+                        currentLevel = currentLevel[key];
                 }
-                //console.log(objectPath, action.meta.arg)
-                const lastKey = objectPath[objectPath.length - 1];
-                currentLevel[lastKey] = action.payload.data.tree;
+
+                if (currentLevel) {
+
+                    //console.log(objectPath, action.meta.arg)
+                    const lastKey = objectPath[objectPath.length - 1];
+                    currentLevel[lastKey] = action.payload.data.tree;
+                }
 
                 // save
                 state.tree = tree;
